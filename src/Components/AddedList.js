@@ -13,20 +13,24 @@ const AddedList = () => {
     checked:""
 };
 useEffect(()=>{
-   const FetchData = async () => {
-     try{
-        const response = await fetch(FETCH_URL);
-        if(!response.ok) throw new Error ("Fetch Data Failed");
-        const newList = await response.json();
-        console.log(newList);
-         setList(newList);
-     }catch(err){
-        console.log(err);
-     }
+//    const FetchData = async () => {
+//      try{
+//         const response = await fetch(FETCH_URL);
+//         if(!response.ok) throw new Error ("Fetch Data Failed");
+//         const newList = await response.json();
+       
+//         const newList3= [...newList,...newList2];
+//          setList(newList3);
+//      }catch(err){
+//         console.log(err);
+//      }
     
-   }
+//    }
 
-   (async () => FetchData())();
+
+//    FetchData();
+const newList2= JSON.parse(localStorage.getItem(PREV_STATE));
+setList(newList2);
 },[])
  
  useEffect(()=>{
