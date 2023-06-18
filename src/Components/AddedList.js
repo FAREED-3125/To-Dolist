@@ -4,6 +4,7 @@ import Additems from './Additems';
 const AddedList = () => {
     const PREV_STATE="previousData";
     const FETCH_URL = " http://localhost:3500/items";
+    const Focus = useRef();
 
     const [itemsList,setList]=useState([
        
@@ -60,17 +61,18 @@ setList(newList2);
         const newItemsArr=[...itemsList,newObject];
         setList(newItemsArr);
         setTitle('');
+        Focus.current.focus();
     }
     return (
            <div className="AddedList" style={{
             width:"100%",
            }}>
-             <Additems newTitle={newTitle}  handleAdd={handleAdd} setTitle={setTitle}/>
+             <Additems newTitle={newTitle} Focus={Focus}  handleAdd={handleAdd} setTitle={setTitle}/>
             {
                 itemsList.map((items)=>(
                     <div className="Addeditems" key={items.id}>
                         <input type="checkbox" checked={items.checked} className="checkInput" onChange={()=>HandleCheck(items.id)}/>
-                        <h3>{items.title}</h3>
+                        <h3 onDoubleClick={() => HandleCheck(items.id)} style={{textDecoration : items.checked ? "line-through" : null}}>{items.title}</h3>
                         <div>
                             <BsTrash className="trash" onClick={()=>handleDelete(items.id)}/>
                         </div>
