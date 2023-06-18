@@ -1,14 +1,40 @@
-import { useState } from 'react';
+import { useState,useEffect,useRef} from 'react';
 import {BsTrash} from 'react-icons/bs';
 import Additems from './Additems';
 const AddedList = () => {
+    const PREV_STATE="previousData";
+    const FETCH_URL = " http://localhost:3500/items";
+
+    const [itemsList,setList]=useState([
+       
+    ]);
     const list= {id:"",
     title:"",
     checked:""
 };
-    const [itemsList,setList]=useState([
-       
-    ])
+useEffect(()=>{
+   const FetchData = async () => {
+     try{
+        const response = await fetch(FETCH_URL);
+        if(!response.ok) throw new Error ("Fetch Data Failed");
+        const newList = await response.json();
+        console.log(newList);
+         setList(newList);
+     }catch(err){
+        console.log(err);
+     }
+    
+   }
+
+   (async () => FetchData())();
+},[])
+ 
+ useEffect(()=>{
+    localStorage.setItem(PREV_STATE,JSON.stringify(itemsList));
+ },[itemsList])
+
+
+ 
   const [newTitle,setTitle]=useState("");
     const HandleCheck=(id)=>{
         const newItemsList=itemsList.map((items)=>(items.id===id ? {...items,checked:!items.checked} : items))
@@ -18,7 +44,7 @@ const AddedList = () => {
     const handleDelete=(id)=>{
         const newlist=itemsList.filter((items)=>items.id!==id );
         setList(newlist)
-        window.localStorage.setItem("previousData",JSON.stringify(newlist));
+       
     }
     const handleAdd=(event)=>{
         event.preventDefault();
